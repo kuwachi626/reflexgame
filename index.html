@@ -345,20 +345,17 @@ class reflexgame extends AR {
               const fin = hp.distanceTo(resposi);
               //球出現
               if (counttime > time) {
-                if (cntred < ns2) {
+                if (cntred < ns2 && cnt2 < 2) {
                   var a = Math.floor(Math.random() * (2 - 0)) + 0;
                 } else {
                   a = 0;
                 }
                 this.scene.remove(objs[cnt]);
                 this.scene.remove(objs2[cnt2]);
-                pnt.splice(1);
-                objs.splice(1);
-                pnt2.splice(1);
-                objs2.splice(1);
-                cnt = 0;
-                cnt2 = 0;
                 if(a === 0) {
+                  pnt2.splice(1);
+                  objs2.splice(1);
+                  cnt2 = 0;
                   cnt++;
                   cntblue++;
                   if (cntblue === ns) {
@@ -376,6 +373,9 @@ class reflexgame extends AR {
                   ss.play("hint");
                   checktime = new Date().getTime();
                 } else if(a === 1) {
+                  pnt.splice(1);
+                  objs.splice(1);
+                  cnt = 0;
                   x = Math.random() * 1.1 - 0.5;
                   y = Math.random() * 1.0 - 0.7;
                   z = Math.random() * 0.3 - 0.8;
