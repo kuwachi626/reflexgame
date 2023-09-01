@@ -164,7 +164,7 @@ class reflexgame extends AR {
       levelselect.add(createTextMesh("3:VERYHARD", 0, 0.4, tz));
       this.scene.add(levelselect);
 
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 4; i++) {
         if (i == 3){
           const x = 0;
           const y = -0.2;
@@ -190,19 +190,6 @@ class reflexgame extends AR {
         }
       }
 
-      for (let i = 0; i < 3; i++) {
-        const x = 0.19;
-        const y = 1.0 - 0.3 * i;
-        const z = tz;
-        const q = new THREE.Vector3(x, y, z);
-        pnt2[i] = q;
-
-        const obj2 = createNumSphere2(size, 0xFF0000);
-        obj2.position.copy(q);
-        //this.scene.add(obj2);
-        objs2[i] = obj2;
-      }
-
       A: for (;;) {
         await sleep(1000 / 60);
         for (let i = 0; i < this.ctrls.length; i++) {
@@ -219,9 +206,8 @@ class reflexgame extends AR {
             }
         }
       }
-      for (let j = 0; j < pnt2.length; j++) {
+      for (let j = 0; j < pnt.length; j++) {
         this.scene.remove(objs[j]);
-        this.scene.remove(objs2[j]);
       }
       switch (level) {
         case 1: //nomal 
@@ -240,13 +226,14 @@ class reflexgame extends AR {
           break;
         case 3: //veryhard 
           time = 1;
-          ns2 = 10;
+          ns2 = 15;
           bestrecord = bestrecord3;
           finalrecord = finalrecord3;
           ss.play("veryhard");
           break;
         case 4: //expart 
-          ns2 = 10;
+          time = 0.7;
+          ns2 = 20;
           bestrecord = bestrecord4;
           finalrecord = finalrecord4;
           ss.play("EXPART");
