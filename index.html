@@ -333,7 +333,7 @@ class reflexgame extends AR {
               //球出現
               if (counttime > time) {
                 if (cntred < ns2 && cnt2 < 2) {
-                  var a = Math.floor(Math.random() * (2 - 0)) + 0;
+                  var a = Math.floor(Math.random() * (3 - 0)) + 0;
                 } else {
                   a = 0;
                 }
@@ -374,6 +374,35 @@ class reflexgame extends AR {
                   objs2.push(obj2);
                   cnt2++;
                   cntred++;
+                  ss.play("hint");
+                  checktime = new Date().getTime();
+                } else if(a === 2) {
+                  cnt++;
+                  cnt2++;
+                  cntblue++;
+                  cntred++;
+                  if (cntblue === ns) {
+                    break play;
+                  }
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt.push(p);
+                  obj = createNumSphere1(size, 0x0000FF);
+                  obj.position.copy(p);
+                  this.scene.add(obj);
+                  objs.push(obj);
+
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt2.push(p);
+                  obj2 = createNumSphere2(size, 0xFF0000);
+                  obj2.position.copy(p);
+                  this.scene.add(obj2);
+                  objs2.push(obj2);
                   ss.play("hint");
                   checktime = new Date().getTime();
                 }
@@ -426,6 +455,7 @@ class reflexgame extends AR {
               //球判定
               if (d <= size) {
                 this.scene.remove(objs[cnt]);
+                this.scene.remove(objs2[cnt2]);
                 this.scene.remove(success);
                 pnt.splice(1);
                 objs.splice(1);
@@ -436,7 +466,7 @@ class reflexgame extends AR {
                 this.scene.add(success);
 
                 if (cntred < ns2) {
-                  var a = Math.floor(Math.random() * (2 - 0)) + 0;
+                  var a = Math.floor(Math.random() * (3 - 0)) + 0;
                 } else {
                   a = 0;
                 }
@@ -471,9 +501,39 @@ class reflexgame extends AR {
                   objs2.push(obj2);
                   ss.play("hint");
                   checktime = new Date().getTime();
+                } else if(a === 2) {
+                  cnt++;
+                  cnt2++;
+                  cntblue++;
+                  cntred++;
+                  if (cntblue === ns) {
+                    break play;
+                  }
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt.push(p);
+                  obj = createNumSphere1(size, 0x0000FF);
+                  obj.position.copy(p);
+                  this.scene.add(obj);
+                  objs.push(obj);
+
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt2.push(p);
+                  obj2 = createNumSphere2(size, 0xFF0000);
+                  obj2.position.copy(p);
+                  this.scene.add(obj2);
+                  objs2.push(obj2);
+                  ss.play("hint");
+                  checktime = new Date().getTime();
                 }
               }
               if (e <= size) {
+                this.scene.remove(objs[cnt]);
                 this.scene.remove(objs2[cnt2]);
                 this.scene.remove(miss);
                 pnt2.splice(1);
@@ -485,7 +545,7 @@ class reflexgame extends AR {
                 this.scene.add(miss);
 
                 if (cntred < 10) {
-                  var a = Math.floor(Math.random() * (2 - 0)) + 0;
+                  var a = Math.floor(Math.random() * (3 - 0)) + 0;
                 } else {
                   a = 0;
                 }
@@ -509,6 +569,35 @@ class reflexgame extends AR {
                 } else if(a === 1) {
                   cnt2++;
                   cntred++;
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt2.push(p);
+                  obj2 = createNumSphere2(size, 0xFF0000);
+                  obj2.position.copy(p);
+                  this.scene.add(obj2);
+                  objs2.push(obj2);
+                  ss.play("hint");
+                  checktime = new Date().getTime();
+                } else if(a === 2) {
+                  cnt++;
+                  cnt2++;
+                  cntblue++;
+                  cntred++;
+                  if (cntblue === ns) {
+                    break play;
+                  }
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt.push(p);
+                  obj = createNumSphere1(size, 0x0000FF);
+                  obj.position.copy(p);
+                  this.scene.add(obj);
+                  objs.push(obj);
+
                   x = Math.random() * 1.1 - 0.5;
                   y = Math.random() * 1.0 - 0.7;
                   z = Math.random() * 0.3 - 0.8;
