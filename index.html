@@ -765,32 +765,237 @@ class reflexgame extends AR {
         }
       }
       if (mode === 2) {
-        pnt.splice(0);
-        pnt2.splice(0);
-        objs.splice(0);
-        objs2.splice(0);
-        const EndlessTitle  = new THREE.Group();
-        EndlessTitle.add(createTextMesh("ENDLESS", 0, 0.5, tz));
-        EndlessTitle.add(createTextMesh("best record: " + bestrecord, 0, 0.2, tz));
-        EndlessTitle.add(createTextMesh("latest record: " + (finalrecord ? finalrecord.toFixed(2) : "-"), 0, -0.1, tz));
-        this.scene.add(EndlessTitle);
-        this.scene.add(start);
-        this.scene.add(starttxt);
+        ready: for (;;) {
+          pnt.splice(0);
+          objs.splice(0);
 
-        A: for (;;) {
-          await sleep(1000 / 60);
-          for (let i = 0; i < this.ctrls.length; i++) {
-              const ctrl = this.ctrls[i];
-              const hp = new THREE.Vector3();
-              hp.setFromMatrixPosition(ctrl.matrixWorld);
-              let e = hp.distanceTo(staposi);
-              if (e <= size * 1.2) {
-                this.scene.remove(EndlessTitle);
-                this.scene.remove(start);
-                this.scene.remove(starttxt);
-                ss.play("start");
-                break A;
+          const EndlessTitle  = new THREE.Group();
+          EndlessTitle.add(createTextMesh("ENDLESS", 0, 0.5, tz));
+          EndlessTitle.add(createTextMesh("best record: " + bestrecordEndless, 0, 0.2, tz));
+          EndlessTitle.add(createTextMesh("latest record: " + (finalrecordEndless ? finalrecordEndless : "-"), 0, -0.1, tz));
+          this.scene.add(EndlessTitle);
+          this.scene.add(start);
+          this.scene.add(starttxt);
+
+          A: for (;;) {
+            await sleep(1000 / 60);
+            for (let i = 0; i < this.ctrls.length; i++) {
+                const ctrl = this.ctrls[i];
+                const hp = new THREE.Vector3();
+                hp.setFromMatrixPosition(ctrl.matrixWorld);
+                let e = hp.distanceTo(staposi);
+                if (e <= size * 1.2) {
+                  this.scene.remove(EndlessTitle);
+                  this.scene.remove(start);
+                  this.scene.remove(starttxt);
+                  ss.play("start");
+                  break A;
+                }
+            }
+          }
+
+          let cnt = 1;
+          let sec = 0;
+          let count = 0;
+          let checktime = new Date().getTime();
+          let counttime = 0;
+          const q = new THREE.Vector3(0, 1.8, -1.5);
+          pnt[0] = q;
+          let obj = createNumSphere1(size, 0x0000FF);
+          obj.position.copy(q);
+          objs.push(obj);
+
+          let x = Math.random() * 1.1 - 0.5;
+          let y = Math.random() * 1.0 - 0.7;
+          let z = Math.random() * 0.3 - 0.8;
+          let p = new THREE.Vector3(x, y, z);
+          pnt.push(p);
+
+          obj = createNumSphere1(size, 0x0000FF);
+          obj.position.copy(p);
+          this.scene.add(obj);
+          objs.push(obj);
+
+          // debug
+          let debugmesh = null;
+          const debug = (s) => {
+            if (debugmesh) {
+              this.scene.remove(debugmesh);
+            }
+            debugmesh = createTextMesh(s, 0, 1.5, tz);
+            this.scene.add(debugmesh);
+          };
+
+          let success = createTextMesh("SUCCESS:" + (count), 0, 2.0, tz, 0xFFFFFF);
+
+          this.scene.add(success);
+
+          this.scene.add(reset);
+
+          // game
+          game: for (;;) {
+            play: for (;;) {
+              await sleep(1000 / 60);
+              for (let i = 0; i < this.ctrls.length; i++) {
+                counttime = (new Date().getTime() - checktime) / 1000;
+                const ctrl = this.ctrls[i];
+                const hp = new THREE.Vector3();
+                hp.setFromMatrixPosition(ctrl.matrixWorld);
+                const d = hp.distanceTo(pnt[cnt]);
+                const fin = hp.distanceTo(resposi);
+
+                //球出現
+                if (counttime > 2 - sec) {
+                  this.scene.remove(objs[cnt]);
+                  x = Math.random() * 1.1 - 0.5;
+                  y = Math.random() * 1.0 - 0.7;
+                  z = Math.random() * 0.3 - 0.8;
+                  p = new THREE.Vector3(x, y, z);
+                  pnt.push(p);
+                  if (pnt.length === 3) {
+                    break play;
+                  }
+                  obj = createNumSphere1(size, 0x0000FF);
+                  obj.position.copy(p);
+                  this.scene.add(obj);
+                  objs.push(obj);
+                  cnt++;
+                  ss.play("hint");
+                  checktime = new Date().getTime();
+                }
+
+                //後ろの球（強制ゲームオーバー）
+                if (fin <= size * 1.2) {
+                  this.scene.remove(obj);
+                  ss.play("pipipipi");
+                  this.scene.remove(success);
+                  this.scene.remove(reset);
+
+                  const fail = createTextMesh("GAME OVER", 0, 0.4, tz, 0xFF0000);
+                  this.scene.add(fail);
+                  this.scene.add(conti);
+                  this.scene.add(finish);
+                  this.scene.add(retry);
+
+                  A: for (;;) {
+                    await sleep(1000 / 60);
+                    for (let i = 0; i < this.ctrls.length; i++) {
+                      const ctrl = this.ctrls[i];
+                      const hp = new THREE.Vector3();
+                      hp.setFromMatrixPosition(ctrl.matrixWorld);
+                      let e = hp.distanceTo(finposi);
+                      let ret = hp.distanceTo(retposi);
+                      if (e <= size * 1.2) {
+                        this.scene.remove(finish);
+                        this.scene.remove(retry);
+                        this.scene.remove(fail);
+                        this.scene.remove(conti);
+                        ss.play("cancel");
+                        break ready;
+                      }
+                      else if (ret <= size * 1.2) {
+                        this.scene.remove(finish);
+                        this.scene.remove(retry);
+                        this.scene.remove(fail);
+                        this.scene.remove(conti);
+                        ss.play("continue");
+                        break game;
+                      }
+                    }
+                  }
+                }
+                
+                //球判定
+                if (d <= size) {
+                  this.scene.remove(objs[cnt]);
+                  this.scene.remove(success);
+                  pnt.splice(1);
+                  objs.splice(1);
+                  cnt = 0;
+                  ss.play("pon");
+                  count++;
+                  success = createTextMesh("SUCCESS:" + (count), 0, 2.0, tz, 0xFFFFFF);
+                  this.scene.add(success);
+                  sec += 0.05;
+                }
               }
+            }
+
+            //終了
+            ss.play("clear");
+            this.scene.remove(success);
+            this.scene.remove(reset);
+            finalrecordEndless = count;
+
+            const result = new THREE.Group();
+            result.add(createTextMesh("FINISH! ", 0, 0.3, tz));
+            result.add(createTextMesh("result: " + finalrecordEndless, 0, 0, tz));
+            if (finalrecordEndless < bestrecordEndless) {
+              result.add(createTextMesh("(" + (finalrecordEndless-bestrecordEndless) + ")", 0.5, 0, tz, 0xff0000));
+            } else {
+              result.add(createTextMesh("(+" + (finalrecordEndless-bestrecordEndless) + ")", 0.5, 0, tz, 0x00ffff));
+            }
+            this.scene.add(result);
+            this.scene.add(next);
+            this.scene.add(nexttxt);
+            A: for (;;) {
+              await sleep(1000 / 60);
+              for (let i = 0; i < this.ctrls.length; i++) {
+                  const ctrl = this.ctrls[i];
+                  const hp = new THREE.Vector3();
+                  hp.setFromMatrixPosition(ctrl.matrixWorld);
+                  let e = hp.distanceTo(nexposi);
+                  if (e <= size * 1.2) {
+                    this.scene.remove(result);
+                    this.scene.remove(next);
+                    this.scene.remove(nexttxt);
+                    break A;
+                  }
+              }
+            }
+            
+            let mes = null;
+            if (finalrecordEndless > bestrecordEndless) {
+              localStorage.setItem("bestrecordEndless", finalrecordEndless);
+              mes = "HIGH SCORE! ";
+              ss.play("success");
+            } else {
+              mes = "Let's do our best next time!! ";
+              ss.play("nexttime");
+            }
+
+            const meshm = createTextMesh(mes, 0, 0.4, tz);
+            this.scene.add(meshm);
+            this.scene.add(finish);
+            this.scene.add(retry);
+            this.scene.add(conti);
+
+            A: for (;;) {
+              await sleep(1000 / 60);
+              for (let i = 0; i < this.ctrls.length; i++) {
+                const ctrl = this.ctrls[i];
+                const hp = new THREE.Vector3();
+                hp.setFromMatrixPosition(ctrl.matrixWorld);
+                let e = hp.distanceTo(finposi);
+                let ret = hp.distanceTo(retposi);
+                if (e <= size * 1.2) {
+                  this.scene.remove(finish);
+                  this.scene.remove(retry);
+                  this.scene.remove(meshm);
+                  this.scene.remove(conti);
+                  ss.play("cancel");
+                  break ready;
+                }
+                else if (ret <= size * 1.2) {
+                  this.scene.remove(finish);
+                  this.scene.remove(retry);
+                  this.scene.remove(meshm);
+                  this.scene.remove(conti);
+                  ss.play("continue");
+                  break game;
+                }
+              }
+            }            
           }
         }
       }
