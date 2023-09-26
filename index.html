@@ -128,17 +128,30 @@ class reflexgame extends AR {
       next.position.copy(nexposi);
       const nexttxt = createTextMesh("Next", 0, -0.1, -0.5);
 
+      const nomaposi = new THREE.Vector3(-0.4, -0.3, -0.5);
+      const nomal = createNumSphere4("N", size, 0x00ff00);
+      nomal.position.copy(nomaposi);
+
+      const endlposi = new THREE.Vector3(0.4, -0.3, -0.5);
+      const endless = createNumSphere4("E", size, 0xff6347);
+      endless.position.copy(endlposi);
+
       const conti = new THREE.Group();
       conti.add(createTextMesh("Continue?", 0, 0.1, -0.5));
       conti.add(createTextMesh("YES", -0.4, -0.1, -0.5));
       conti.add(createTextMesh("NO", 0.4, -0.1, -0.5));
 
+      const modetxt = new THREE.Group();
+      modetxt.add(createTextMesh("NOMAL", -0.4, -0.1, -0.5));
+      modetxt.add(createTextMesh("ENDLESS", 0.4, -0.1, -0.5));
+
       //タイトル
       const title  = createTextMesh("reflex game", 0, 0.2, tz);
 
       this.scene.add(title);
-      this.scene.add(start);
-      this.scene.add(starttxt);
+      this.scene.add(nomal);
+      this.scene.add(endless);
+      this.scene.add(modetxt);
 
       A: for (;;) {
         await sleep(1000 / 60);
@@ -146,11 +159,12 @@ class reflexgame extends AR {
             const ctrl = this.ctrls[i];
             const hp = new THREE.Vector3();
             hp.setFromMatrixPosition(ctrl.matrixWorld);
-            let e = hp.distanceTo(staposi);
+            let e = hp.distanceTo(nomaposi);
             if (e <= size * 1.2) {
               this.scene.remove(title);
-              this.scene.remove(start);
-              this.scene.remove(starttxt);
+              this.scene.remove(nomal);
+              this.scene.remove(endless);
+              this.scene.remove(modetxt);
               ss.play("levelselect");
               break A;
             }
