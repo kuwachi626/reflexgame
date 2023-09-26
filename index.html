@@ -109,41 +109,50 @@ class reflexgame extends AR {
       let time = 0;
       let mode = 0;
 
+      //スタート用
       const staposi = new THREE.Vector3(0, -0.3, -0.5);
       const start = createNumSphere4("S", size, 0x00ffff);
       start.position.copy(staposi);
       const starttxt = createTextMesh("Start", 0, -0.1, -0.5);
 
+      //強制終了用
       const resposi = new THREE.Vector3(0, 0, 1);
       const reset = createNumSphere4("R", size, 0x800080);
       reset.position.copy(resposi);
 
+      //YES用（コンテニュー時）
       const retposi = new THREE.Vector3(-0.4, -0.3, -0.5);
       const retry = createNumSphere4("Y", size, 0x00ffff);
       retry.position.copy(retposi);
 
+      //NO用（コンテニュー時）
       const finposi = new THREE.Vector3(0.4, -0.3, -0.5);
       const finish = createNumSphere4("N", size, 0xFF0000);
       finish.position.copy(finposi);
 
+      //次へ用
       const nexposi = new THREE.Vector3(0, -0.3, -0.5);
       const next = createNumSphere4("N", size, 0x00ff00);
       next.position.copy(nexposi);
       const nexttxt = createTextMesh("Next", 0, -0.1, -0.5);
 
+      //通常モード選択用
       const nomaposi = new THREE.Vector3(-0.4, -0.3, -0.5);
       const nomal = createNumSphere4("N", size, 0x00ff00);
       nomal.position.copy(nomaposi);
 
+      //エンドレスモード選択用
       const endlposi = new THREE.Vector3(0.4, -0.3, -0.5);
       const endless = createNumSphere4("E", size, 0xff6347);
       endless.position.copy(endlposi);
 
+      //コンテニューテキスト用
       const conti = new THREE.Group();
       conti.add(createTextMesh("Continue?", 0, 0.1, -0.5));
       conti.add(createTextMesh("YES", -0.4, -0.1, -0.5));
       conti.add(createTextMesh("NO", 0.4, -0.1, -0.5));
 
+      //モード選択テキスト用
       const modetxt = new THREE.Group();
       modetxt.add(createTextMesh("MODE", 0, 0.2, tz));
       modetxt.add(createTextMesh("NOMAL", -0.4, -0.1, -0.5));
@@ -173,6 +182,7 @@ class reflexgame extends AR {
         }
       }
 
+      //モード選択
       this.scene.add(nomal);
       this.scene.add(endless);
       this.scene.add(modetxt);
@@ -206,6 +216,7 @@ class reflexgame extends AR {
         }
       }
     
+      //通常モード
       if (mode === 1) {
         //難易度選択
         const levelselect = new THREE.Group();
@@ -329,6 +340,8 @@ class reflexgame extends AR {
           let count2 = 0;
           let checktime = new Date().getTime();
           let counttime = 0;
+
+          //初期位置（連続触れ防ぐため）
           const q = new THREE.Vector3(0, 1.8, -1.5);
           pnt[0] = q;
           pnt2[0] = q;
@@ -339,6 +352,7 @@ class reflexgame extends AR {
           obj2.position.copy(q);
           objs2.push(obj2);
 
+          //初期球出現
           let x = Math.random() * 1.1 - 0.5;
           let y = Math.random() * 1.0 - 0.7;
           let z = Math.random() * 0.3 - 0.8;
@@ -365,7 +379,6 @@ class reflexgame extends AR {
 
           this.scene.add(success);
           this.scene.add(miss);
-
           this.scene.add(reset);
 
           // game
@@ -514,73 +527,6 @@ class reflexgame extends AR {
                   count++;
                   success = createTextMesh("SUCCESS:" + (count), 0, 2.0, tz, 0xFFFFFF);
                   this.scene.add(success);
-
-                  if (cntred < ns2) {
-                    var a = Math.floor(Math.random() * (3 - 0)) + 0;
-                  } else {
-                    a = 0;
-                  }
-                  if(a === 0) {
-                    cnt++;
-                    cntblue++;
-                    if (cntblue === ns) {
-                      break play;
-                    }
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt.push(p);
-                    obj = createNumSphere1(size, 0x0000FF);
-                    obj.position.copy(p);
-                    this.scene.add(obj);
-                    objs.push(obj);
-                    ss.play("hint");
-                    checktime = new Date().getTime();
-                  } else if(a === 1) {
-                    cnt2++;
-                    cntred++;
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt2.push(p);
-                    obj2 = createNumSphere2(size, 0xFF0000);
-                    obj2.position.copy(p);
-                    this.scene.add(obj2);
-                    objs2.push(obj2);
-                    ss.play("hint");
-                    checktime = new Date().getTime();
-                  } else if(a === 2) {
-                    cnt++;
-                    cnt2++;
-                    cntblue++;
-                    cntred++;
-                    if (cntblue === ns) {
-                      break play;
-                    }
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt.push(p);
-                    obj = createNumSphere1(size, 0x0000FF);
-                    obj.position.copy(p);
-                    this.scene.add(obj);
-                    objs.push(obj);
-
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt2.push(p);
-                    obj2 = createNumSphere2(size, 0xFF0000);
-                    obj2.position.copy(p);
-                    this.scene.add(obj2);
-                    objs2.push(obj2);
-                    ss.play("hint");
-                    checktime = new Date().getTime();
-                  }
                 }
                 if (e <= size) {
                   this.scene.remove(objs[cnt]);
@@ -593,73 +539,6 @@ class reflexgame extends AR {
                   count2++;
                   miss = createTextMesh("MISS:" + (count2), 0, 1.8, tz, 0xFF0000);
                   this.scene.add(miss);
-
-                  if (cntred < 10) {
-                    var a = Math.floor(Math.random() * (3 - 0)) + 0;
-                  } else {
-                    a = 0;
-                  }
-                  if(a === 0) {
-                    cnt++;
-                    cntblue++;
-                    if (cntblue === ns) {
-                      break play;
-                    }
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt.push(p);
-                    obj = createNumSphere1(size, 0x0000FF);
-                    obj.position.copy(p);
-                    this.scene.add(obj);
-                    objs.push(obj);
-                    ss.play("hint");
-                    checktime = new Date().getTime();
-                  } else if(a === 1) {
-                    cnt2++;
-                    cntred++;
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt2.push(p);
-                    obj2 = createNumSphere2(size, 0xFF0000);
-                    obj2.position.copy(p);
-                    this.scene.add(obj2);
-                    objs2.push(obj2);
-                    ss.play("hint");
-                    checktime = new Date().getTime();
-                  } else if(a === 2) {
-                    cnt++;
-                    cnt2++;
-                    cntblue++;
-                    cntred++;
-                    if (cntblue === ns) {
-                      break play;
-                    }
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt.push(p);
-                    obj = createNumSphere1(size, 0x0000FF);
-                    obj.position.copy(p);
-                    this.scene.add(obj);
-                    objs.push(obj);
-
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt2.push(p);
-                    obj2 = createNumSphere2(size, 0xFF0000);
-                    obj2.position.copy(p);
-                    this.scene.add(obj2);
-                    objs2.push(obj2);
-                    ss.play("hint");
-                    checktime = new Date().getTime();
-                  }
                 }
               }
             }
@@ -764,11 +643,14 @@ class reflexgame extends AR {
           }
         }
       }
+
+      //エンドレスモード
       if (mode === 2) {
         ready: for (;;) {
           pnt.splice(0);
           objs.splice(0);
 
+          //スタート前スコア確認
           const EndlessTitle  = new THREE.Group();
           EndlessTitle.add(createTextMesh("ENDLESS", 0, 0.5, tz));
           EndlessTitle.add(createTextMesh("best record: " + bestrecordEndless, 0, 0.2, tz));
@@ -799,12 +681,15 @@ class reflexgame extends AR {
           let count = 0;
           let checktime = new Date().getTime();
           let counttime = 0;
+          
+          //初期位置
           const q = new THREE.Vector3(0, 1.8, -1.5);
           pnt[0] = q;
           let obj = createNumSphere1(size, 0x0000FF);
           obj.position.copy(q);
           objs.push(obj);
 
+          //初期球出現
           let x = Math.random() * 1.1 - 0.5;
           let y = Math.random() * 1.0 - 0.7;
           let z = Math.random() * 0.3 - 0.8;
@@ -829,7 +714,6 @@ class reflexgame extends AR {
           let success = createTextMesh("SUCCESS:" + (count), 0, 2.0, tz, 0xFFFFFF);
 
           this.scene.add(success);
-
           this.scene.add(reset);
 
           // game
