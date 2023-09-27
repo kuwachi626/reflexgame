@@ -357,6 +357,7 @@ class reflexgame extends AR {
           let y = Math.random() * 1.0 - 0.7;
           let z = Math.random() * 0.3 - 0.8;
           let p = new THREE.Vector3(x, y, z);
+          let p2 = new THREE.Vector3(x, y, z);
           pnt.push(p);
 
           obj = createNumSphere1(size, 0x0000FF);
@@ -429,10 +430,10 @@ class reflexgame extends AR {
                     x = Math.random() * 1.1 - 0.5;
                     y = Math.random() * 1.0 - 0.7;
                     z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt2.push(p);
+                    p2 = new THREE.Vector3(x, y, z);
+                    pnt2.push(p2);
                     obj2 = createNumSphere2(size, 0xFF0000);
-                    obj2.position.copy(p);
+                    obj2.position.copy(p2);
                     this.scene.add(obj2);
                     objs2.push(obj2);
                     cnt2++;
@@ -457,13 +458,19 @@ class reflexgame extends AR {
                     this.scene.add(obj);
                     objs.push(obj);
 
-                    x = Math.random() * 1.1 - 0.5;
-                    y = Math.random() * 1.0 - 0.7;
-                    z = Math.random() * 0.3 - 0.8;
-                    p = new THREE.Vector3(x, y, z);
-                    pnt2.push(p);
+                    while (true) {
+                      x = Math.random() * 1.1 - 0.5;
+                      y = Math.random() * 1.0 - 0.7;
+                      z = Math.random() * 0.3 - 0.8;
+                      p2 = new THREE.Vector3(x, y, z);
+                      if (p.distanceTo(p2) > size * 2) {
+                        break;
+                      }
+                    }
+
+                    pnt2.push(p2);
                     obj2 = createNumSphere2(size, 0xFF0000);
-                    obj2.position.copy(p);
+                    obj2.position.copy(p2);
                     this.scene.add(obj2);
                     objs2.push(obj2);
                     ss.play("hint");
