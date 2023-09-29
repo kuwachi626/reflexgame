@@ -871,6 +871,7 @@ class reflexgame extends AR {
             let mes = null;
             if (finalrecordEndless > bestrecordEndless) {
               localStorage.setItem("bestrecordEndless", finalrecordEndless);
+              bestrecordEndless = finalrecordEndless;
               mes = "HIGH SCORE! ";
               ss.play("success");
             } else {
