@@ -109,6 +109,17 @@ class reflexgame extends AR {
       let time = 0;
       let mode = 0;
 
+      //枠線
+      const material = new THREE.LineBasicMaterial({color: 0x00FF00});
+      const points = [];
+      points.push(new THREE.Vector3(-0.5, 0.3, -0.65));
+      points.push(new THREE.Vector3(0.6, 0.3, -0.65));
+      points.push(new THREE.Vector3(0.6, -0.7, -0.65));
+      points.push(new THREE.Vector3(-0.5, -0.7, -0.65));
+      points.push(new THREE.Vector3(-0.5, 0.3, -0.65));
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const line = new THREE.Line(geometry, material);
+
       //スタート用
       const staposi = new THREE.Vector3(0, -0.3, -0.5);
       const start = createNumSphere4("S", size, 0x00ffff);
@@ -158,6 +169,7 @@ class reflexgame extends AR {
       modetxt.add(createTextMesh("NOMAL", -0.4, -0.1, -0.5));
       modetxt.add(createTextMesh("ENDLESS", 0.4, -0.1, -0.5));
 
+      //触れたときのテキスト
       const gettxt = createTextMesh("GET!!", 0, 0.2, tz);
 
       //タイトル
@@ -383,6 +395,7 @@ class reflexgame extends AR {
           this.scene.add(success);
           this.scene.add(miss);
           this.scene.add(reset);
+          this.scene.add(line);
 
           // game
           game: for (;;) {
@@ -490,6 +503,7 @@ class reflexgame extends AR {
                   this.scene.remove(success);
                   this.scene.remove(miss);
                   this.scene.remove(gettxt);
+                  this.scene.remove(line);
 
 
                   this.scene.remove(reset);
@@ -561,8 +575,9 @@ class reflexgame extends AR {
             ss.play("clear");
             this.scene.remove(success);
             this.scene.remove(miss);
-
+            this.scene.remove(line);
             this.scene.remove(reset);
+            
             finalrecord = count - count2;
             const result = new THREE.Group();
             result.add(createTextMesh("FINISH! ", 0, 0.7, tz));
@@ -727,6 +742,7 @@ class reflexgame extends AR {
 
           this.scene.add(success);
           this.scene.add(reset);
+          this.scene.add(line);
 
           // game
           game: for (;;) {
@@ -766,6 +782,7 @@ class reflexgame extends AR {
                   ss.play("pipipipi");
                   this.scene.remove(success);
                   this.scene.remove(reset);
+                  this.scene.remove(line);
 
                   const fail = createTextMesh("GAME OVER", 0, 0.4, tz, 0xFF0000);
                   this.scene.add(fail);
@@ -821,8 +838,9 @@ class reflexgame extends AR {
             ss.play("clear");
             this.scene.remove(success);
             this.scene.remove(reset);
-            finalrecordEndless = count;
+            this.scene.remove(line);
 
+            finalrecordEndless = count;
             const result = new THREE.Group();
             result.add(createTextMesh("FINISH! ", 0, 0.3, tz));
             result.add(createTextMesh("result: " + finalrecordEndless, 0, 0, tz));
