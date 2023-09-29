@@ -580,7 +580,11 @@ class reflexgame extends AR {
             
             finalrecord = count - count2;
             const result = new THREE.Group();
-            result.add(createTextMesh("FINISH! ", 0, 0.7, tz));
+            if (finalrecord === 20){
+              result.add(createTextMesh("PERFECT! ", 0, 0.7, tz, 0xffd700));
+            } else {
+              result.add(createTextMesh("FINISH! ", 0, 0.7, tz));
+            }
             result.add(createTextMesh("success: " + count , 0, 0.4, tz));
             result.add(createTextMesh("miss: " + count2 , 0, 0.1, tz, 0xFF0000));
             result.add(createTextMesh("result: " + (finalrecord), 0, -0.2, tz));
