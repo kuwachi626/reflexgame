@@ -324,7 +324,7 @@ class reflexgame extends AR {
           const choice = new THREE.Group();
           choice.add(createTextMesh(levellist[level-1], 0, 0.5, tz, colorlist[level-1]));
           choice.add(createTextMesh("best record: " + bestrecord, 0, 0.2, tz));
-          choice.add(createTextMesh("latest record: " + (finalrecord ? finalrecord.toFixed(2) : "-"), 0, -0.1, tz));
+          choice.add(createTextMesh("latest record: " + (finalrecord ? finalrecord : "-"), 0, -0.1, tz));
           this.scene.add(choice);
           this.scene.add(start);
           this.scene.add(starttxt);
