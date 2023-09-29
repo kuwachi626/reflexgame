@@ -158,6 +158,8 @@ class reflexgame extends AR {
       modetxt.add(createTextMesh("NOMAL", -0.4, -0.1, -0.5));
       modetxt.add(createTextMesh("ENDLESS", 0.4, -0.1, -0.5));
 
+      const gettxt = createTextMesh("GET!!", 0, 0.2, tz);
+
       //タイトル
       const title  = createTextMesh("reflex game", 0, 0.2, tz);
 
@@ -403,6 +405,7 @@ class reflexgame extends AR {
                   }
                   this.scene.remove(objs[cnt]);
                   this.scene.remove(objs2[cnt2]);
+                  this.scene.remove(gettxt);
                   if(a === 0) {
                     pnt2.splice(1);
                     objs2.splice(1);
@@ -486,6 +489,7 @@ class reflexgame extends AR {
                   ss.play("pipipipi");
                   this.scene.remove(success);
                   this.scene.remove(miss);
+                  this.scene.remove(gettxt);
 
 
                   this.scene.remove(reset);
@@ -524,6 +528,7 @@ class reflexgame extends AR {
                 }
                 //球判定
                 if (d <= size) {
+                  this.scene.add(gettxt);
                   this.scene.remove(objs[cnt]);
                   this.scene.remove(objs2[cnt2]);
                   this.scene.remove(success);
@@ -718,7 +723,7 @@ class reflexgame extends AR {
             this.scene.add(debugmesh);
           };
 
-          let success = createTextMesh("SUCCESS:" + (count), 0, 2.0, tz, 0xFFFFFF);
+          let success = createTextMesh("SUCCESS:  " + (count), 0, 0.5, tz, 0xFFFFFF);
 
           this.scene.add(success);
           this.scene.add(reset);
@@ -805,7 +810,7 @@ class reflexgame extends AR {
                   cnt = 0;
                   ss.play("pon");
                   count++;
-                  success = createTextMesh("SUCCESS:" + (count), 0, 2.0, tz, 0xFFFFFF);
+                  success = createTextMesh("SUCCESS:  " + (count), 0, 0.5, tz, 0xFFFFFF);
                   this.scene.add(success);
                   sec += 0.05;
                 }
