@@ -22,7 +22,6 @@ import { AR } from "./AR.mjs";
 import { createTextMesh } from "./createTextMesh.mjs";
 import { sleep } from "https://js.sabae.cc/sleep.js";
 import { SoundSystem } from "./SoundSystem.mjs";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 //球
 export const createNumSphere1 = (size, color) => {
@@ -109,7 +108,6 @@ class reflexgame extends AR {
       let level = 0;
       let time = 0;
       let mode = 0;
-      const self = this;
 
       //枠線
       const material = new THREE.LineBasicMaterial({color: 0x00FF00});
@@ -176,17 +174,6 @@ class reflexgame extends AR {
 
       //タイトル
       const title  = createTextMesh("reflex game", 0, 0.2, tz);
-
-      const loader = new GLTFLoader();
-      loader.load( "./GLTF/ps-berger.glb", function ( gltf ) {
-        self.scene.add( gltf.scene );
-      }, undefined, function ( error ) {
-        console.error( error );
-      } );
-
-      var light = new THREE.PointLight(0xFFFFFF); // 白色のポイントライト
-      light.position.set(0, 0, 5); // ライトの位置を設定
-      this.scene.add(light);
 
       this.scene.add(title);
       this.scene.add(start);
